@@ -1,8 +1,9 @@
 import { validateClientHandler } from "@/controllers/authController";
 import {
-  listProvincesHandler,
-  getProvinceByIdHandler,
-} from "@/controllers/provinceController";
+  listDistrictsHandler,
+  listDistrictsByProvinceIDHandler,
+  getDistrictByIdHandler,
+} from "@/controllers/districtController";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -13,7 +14,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Invalid Client-ID" }, { status: 401 });
   }
 
-  return listProvincesHandler();
+  return listDistrictsHandler();
 }
 
 export async function POST(req: Request) {
@@ -24,6 +25,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid Client-ID" }, { status: 401 });
   }
 
-  const { id } = await req.json();
-  return getProvinceByIdHandler(id);
+  const { provinceID, id } = await req.json();
+
+  if (provinceID) {
+    return listDistrictsByProvinceIDHandler(provinceID);
+  }
+
+  if (id) {
+    return getDistrictByIdHandler(id);
+  }
+
+  return NextResponse.json({ message: "Invalid request" }, { status: 400 });
 }

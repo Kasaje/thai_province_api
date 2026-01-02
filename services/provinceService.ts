@@ -9,4 +9,15 @@ function listProvince(): Array<Iprovince> {
   return mappedProvinces;
 }
 
-export { listProvince };
+function getProvinceById(id: number): Iprovince | undefined {
+  const province = provinces.find((province) => province.id === id);
+  if (province) {
+    return {
+      id: province.id,
+      name: province.name_en,
+    };
+  }
+  return undefined;
+}
+
+export { listProvince, getProvinceById };
