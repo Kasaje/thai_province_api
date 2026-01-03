@@ -30,10 +30,10 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const districtID = body.districtID;
-    const id = body.id;
+    const subDistrict = body.subDistrictID;
 
-    if (!districtID && !id)
-      throw new CustomError("districtID or id is required", 400);
+    if (!districtID && !subDistrict)
+      throw new CustomError("districtID or subDistrictID is required", 400);
 
     let response;
     if (districtID) {
@@ -42,9 +42,9 @@ export async function POST(req: Request) {
       response = { items: subDistricts };
     }
 
-    if (id) {
+    if (subDistrict) {
       console.log("========== END POST SUBDISTRICT BY ID ==========");
-      response = getSubDistrictByIdHandler(id);
+      response = getSubDistrictByIdHandler(subDistrict);
     }
 
     return handleSuccess(response, 200);

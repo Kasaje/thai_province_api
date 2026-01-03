@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import {
   listSubDistricts,
   listSubDistrictsByDistrictID,
@@ -8,7 +7,7 @@ import { CustomError } from "@/utils/customError";
 
 export function listSubDistrictsHandler() {
   const subDistricts = listSubDistricts();
-  return NextResponse.json(subDistricts);
+  return subDistricts;
 }
 
 export function listSubDistrictsByDistrictIDHandler(districtID: number) {
