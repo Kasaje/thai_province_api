@@ -1,39 +1,59 @@
-import { validateClientHandler } from "@/controllers/authController";
 import {
   listDistrictsHandler,
   listDistrictsByProvinceIDHandler,
   getDistrictByIdHandler,
 } from "@/controllers/districtController";
+import { CustomError, handleError } from "@/utils/customError";
+import { handleSuccess } from "@/utils/https";
+import {
+  getBodyValue,
+  getHeaderValue,
+  validateXAPIKey,
+} from "@/utils/validation";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const clientID = req.headers.get("client-id") || "";
-  const isValidClient = validateClientHandler(clientID);
+  try {
+    console.log("========== START LIST DISTRICTS ==========");
+    const xAPIKey = getHeaderValue(req, "x-api-key");
+    validateXAPIKey(xAPIKey);
 
-  if (!isValidClient) {
-    return NextResponse.json({ error: "Invalid Client-ID" }, { status: 401 });
+    console.log("========== END LIST DISTRICTS ==========");
+    const districts = listDistrictsHandler();
+    return handleSuccess({ items: districts }, 200);
+  } catch (error) {
+    console.error("========== ERROR LIST DISTRICTS ==========", error);
+    return handleError(error);
   }
-
-  return listDistrictsHandler();
 }
 
 export async function POST(req: Request) {
-  const clientID = req.headers.get("client-id") || "";
-  const isValidClient = validateClientHandler(clientID);
+  try {
+    console.log("========== START POST DISTRICT ==========");
+    const xAPIKey = getHeaderValue(req, "x-api-key");
+    validateXAPIKey(xAPIKey);
 
-  if (!isValidClient) {
-    return NextResponse.json({ error: "Invalid Client-ID" }, { status: 401 });
+    let response;
+    const provinceID = await getBodyValue<number>(req, "provinceID");
+    const id = await getBodyValue<number>(req, "id");
+
+    if (!provinceID && !id)
+      throw new CustomError("provinceID or id is required", 400);
+
+    if (provinceID) {
+      console.log("========== END POST DISTRICT BY PROVINCE ID ==========");
+      const districts = listDistrictsByProvinceIDHandler(provinceID);
+      response = { items: districts };
+    }
+
+    if (id) {
+      console.log("========== END POST DISTRICT BY ID ==========");
+      response = getDistrictByIdHandler(id);
+    }
+
+    return handleSuccess(response, 200);
+  } catch (error) {
+    console.error("========== ERROR POST DISTRICT ==========", error);
+    return handleError(error);
   }
-
-  const { provinceID, id } = await req.json();
-
-  if (provinceID) {
-    return listDistrictsByProvinceIDHandler(provinceID);
-  }
-
-  if (id) {
-    return getDistrictByIdHandler(id);
-  }
-
-  return NextResponse.json({ message: "Invalid request" }, { status: 400 });
 }

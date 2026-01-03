@@ -13,7 +13,7 @@ export function listSubDistrictsHandler() {
 export function listSubDistrictsByDistrictIDHandler(districtID: number) {
   try {
     const subDistricts = listSubDistrictsByDistrictID(districtID);
-    return NextResponse.json({ items: subDistricts });
+    return NextResponse.json(subDistricts);
   } catch (error) {
     console.error("Error listing sub-districts by district ID", error);
     return NextResponse.json(

@@ -12,7 +12,7 @@ export function listDistrictsHandler() {
 export function listDistrictsByProvinceIDHandler(provinceID: number) {
   try {
     const districts = listDistrictsByProvinceID(provinceID);
-    return NextResponse.json({ items: districts });
+    return NextResponse.json(districts);
   } catch (error) {
     console.error("Error listing districts by province ID", error);
     return NextResponse.json(

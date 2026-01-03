@@ -1,39 +1,58 @@
-import { validateClientHandler } from "@/controllers/authController";
 import {
   listSubDistrictsHandler,
   listSubDistrictsByDistrictIDHandler,
   getSubDistrictByIdHandler,
 } from "@/controllers/subDistrictController";
-import { NextResponse } from "next/server";
+import { CustomError, handleError } from "@/utils/customError";
+import { handleSuccess } from "@/utils/https";
+import {
+  getBodyValue,
+  getHeaderValue,
+  validateXAPIKey,
+} from "@/utils/validation";
 
 export async function GET(req: Request) {
-  const clientID = req.headers.get("client-id") || "";
-  const isValidClient = validateClientHandler(clientID);
+  try {
+    console.log("========== START GET SUBDISTRICTS ==========");
+    const xAPIKey = getHeaderValue(req, "x-api-key");
+    validateXAPIKey(xAPIKey);
 
-  if (!isValidClient) {
-    return NextResponse.json({ error: "Invalid Client-ID" }, { status: 401 });
+    console.log("========== END GET SUBDISTRICTS ==========");
+    const subDistricts = listSubDistrictsHandler();
+    return handleSuccess({ items: subDistricts }, 200);
+  } catch (error) {
+    console.error("========== ERROR GET SUBDISTRICTS ==========", error);
+    return handleError(error);
   }
-
-  return listSubDistrictsHandler();
 }
 
 export async function POST(req: Request) {
-  const clientID = req.headers.get("client-id") || "";
-  const isValidClient = validateClientHandler(clientID);
+  try {
+    console.log("========== START POST SUBDISTRICT ==========");
+    const xAPIKey = getHeaderValue(req, "x-api-key");
+    validateXAPIKey(xAPIKey);
 
-  if (!isValidClient) {
-    return NextResponse.json({ error: "Invalid Client-ID" }, { status: 401 });
+    const districtID = await getBodyValue<number>(req, "districtID");
+    const id = await getBodyValue<number>(req, "id");
+
+    if (!districtID && !id)
+      throw new CustomError("districtID or id is required", 400);
+
+    let response;
+    if (districtID) {
+      console.log("========== END POST SUBDISTRICT BY DISTRICT ID ==========");
+      const subDistricts = listSubDistrictsByDistrictIDHandler(districtID);
+      response = { items: subDistricts };
+    }
+
+    if (id) {
+      console.log("========== END POST SUBDISTRICT BY ID ==========");
+      response = getSubDistrictByIdHandler(id);
+    }
+
+    return handleSuccess(response, 200);
+  } catch (error) {
+    console.error("========== ERROR POST SUBDISTRICT ==========", error);
+    return handleError(error);
   }
-
-  const { districtID, id } = await req.json();
-
-  if (districtID) {
-    return listSubDistrictsByDistrictIDHandler(districtID);
-  }
-
-  if (id) {
-    return getSubDistrictByIdHandler(id);
-  }
-
-  return NextResponse.json({ message: "Invalid request" }, { status: 400 });
 }

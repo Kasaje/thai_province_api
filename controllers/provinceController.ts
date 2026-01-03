@@ -6,11 +6,8 @@ export function listProvincesHandler() {
     console.log("========== START LIST PROVINCES ==========");
     const provinces = listProvince();
 
-    const response = {
-      items: provinces,
-    };
     console.log("========== END LIST PROVINCES ==========");
-    return NextResponse.json(response);
+    return NextResponse.json(provinces);
   } catch (error) {
     console.error("========== ERROR LISTING PROVINCES ==========", error);
     return NextResponse.json(
