@@ -4,11 +4,7 @@ import {
 } from "@/controllers/provinceController";
 import { CustomError, handleError } from "@/utils/customError";
 import { handleSuccess } from "@/utils/https";
-import {
-  getBodyValue,
-  getHeaderValue,
-  validateXAPIKey,
-} from "@/utils/validation";
+import { getHeaderValue, validateXAPIKey } from "@/utils/validation";
 
 export async function GET(req: Request) {
   try {
@@ -32,7 +28,9 @@ export async function POST(req: Request) {
     const xAPIKey = getHeaderValue(req, "x-api-key");
     validateXAPIKey(xAPIKey);
 
-    const id = await getBodyValue<number>(req, "id");
+    const body = await req.json();
+    const id = body.id;
+
     if (!id) throw new CustomError("Province ID is required", 400);
 
     console.log("========== END GET PROVINCE BY ID ==========");

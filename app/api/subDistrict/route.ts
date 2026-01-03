@@ -5,11 +5,7 @@ import {
 } from "@/controllers/subDistrictController";
 import { CustomError, handleError } from "@/utils/customError";
 import { handleSuccess } from "@/utils/https";
-import {
-  getBodyValue,
-  getHeaderValue,
-  validateXAPIKey,
-} from "@/utils/validation";
+import { getHeaderValue, validateXAPIKey } from "@/utils/validation";
 
 export async function GET(req: Request) {
   try {
@@ -32,8 +28,9 @@ export async function POST(req: Request) {
     const xAPIKey = getHeaderValue(req, "x-api-key");
     validateXAPIKey(xAPIKey);
 
-    const districtID = await getBodyValue<number>(req, "districtID");
-    const id = await getBodyValue<number>(req, "id");
+    const body = await req.json();
+    const districtID = body.districtID;
+    const id = body.id;
 
     if (!districtID && !id)
       throw new CustomError("districtID or id is required", 400);

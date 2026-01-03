@@ -15,13 +15,4 @@ function getHeaderValue(req: Request, headerName: string): string {
   return req.headers.get(headerName) || "";
 }
 
-async function getBodyValue<T>(req: Request, key: string): Promise<T | null> {
-  try {
-    const body = await req.json();
-    return body[key] as T;
-  } catch {
-    return null;
-  }
-}
-
-export { validateXAPIKey, getHeaderValue, getBodyValue };
+export { validateXAPIKey, getHeaderValue };

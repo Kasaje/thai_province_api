@@ -6,7 +6,8 @@ export interface Iprovince {
 export interface Idistrict {
   id: number;
   provinceID: number;
-  name: string;
+  nameTH: string;
+  nameEN: string;
 }
 
 export interface IsubDistrict {

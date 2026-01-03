@@ -5,11 +5,7 @@ import {
 } from "@/controllers/districtController";
 import { CustomError, handleError } from "@/utils/customError";
 import { handleSuccess } from "@/utils/https";
-import {
-  getBodyValue,
-  getHeaderValue,
-  validateXAPIKey,
-} from "@/utils/validation";
+import { getHeaderValue, validateXAPIKey } from "@/utils/validation";
 
 export async function GET(req: Request) {
   try {
@@ -33,11 +29,12 @@ export async function POST(req: Request) {
     validateXAPIKey(xAPIKey);
 
     let response;
-    const provinceID = await getBodyValue<number>(req, "provinceID");
-    const id = await getBodyValue<number>(req, "id");
+    const body = await req.json();
+    const provinceID = body.provinceID;
+    const districtID = body.districtID;
 
-    if (!provinceID && !id)
-      throw new CustomError("provinceID or id is required", 400);
+    if (!provinceID && !districtID)
+      throw new CustomError("provinceID or districtID is required", 400);
 
     if (provinceID) {
       console.log("========== END POST DISTRICT BY PROVINCE ID ==========");
@@ -45,9 +42,9 @@ export async function POST(req: Request) {
       response = { items: districts };
     }
 
-    if (id) {
+    if (districtID) {
       console.log("========== END POST DISTRICT BY ID ==========");
-      response = getDistrictByIdHandler(id);
+      response = getDistrictByIdHandler(districtID);
     }
 
     return handleSuccess(response, 200);

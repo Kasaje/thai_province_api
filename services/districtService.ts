@@ -5,7 +5,8 @@ function listDistricts(): Array<Idistrict> {
   const mappedDistricts: Array<Idistrict> = districts.map((district) => ({
     id: district.id,
     provinceID: district.province_id,
-    name: district.name_en,
+    nameTH: district.name_th,
+    nameEN: district.name_en,
   }));
 
   return mappedDistricts;
@@ -17,7 +18,8 @@ function listDistrictsByProvinceID(provinceID: number): Array<Idistrict> {
     .map((district) => ({
       id: district.id,
       provinceID: district.province_id,
-      name: district.name_en,
+      nameTH: district.name_th,
+      nameEN: district.name_en,
     }));
 }
 
@@ -27,7 +29,8 @@ function getDistrictById(id: number): Idistrict | undefined {
     return {
       id: district.id,
       provinceID: district.province_id,
-      name: district.name_en,
+      nameTH: district.name_th,
+      nameEN: district.name_en,
     };
   }
   return undefined;
