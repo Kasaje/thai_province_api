@@ -1,41 +1,20 @@
 import { listProvince, getProvinceById } from "@/services/provinceService";
-import { NextResponse } from "next/server";
+import { CustomError } from "@/utils/customError";
 
 export function listProvincesHandler() {
-  try {
-    console.log("========== START LIST PROVINCES ==========");
-    const provinces = listProvince();
+  console.log("========== START LIST PROVINCES ==========");
+  const provinces = listProvince();
 
-    console.log("========== END LIST PROVINCES ==========");
-    return NextResponse.json(provinces);
-  } catch (error) {
-    console.error("========== ERROR LISTING PROVINCES ==========", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
+  console.log("========== END LIST PROVINCES ==========");
+  return provinces;
 }
 
 export function getProvinceByIdHandler(id: number) {
-  try {
-    console.log("========== START GET PROVINCE BY ID ==========");
-    const province = getProvinceById(id);
+  console.log("========== START GET PROVINCE BY ID ==========");
+  const province = getProvinceById(id);
 
-    if (!province) {
-      return NextResponse.json(
-        { message: "Province not found" },
-        { status: 404 }
-      );
-    }
+  if (!province) throw new CustomError("Province not found", 404);
 
-    console.log("========== END GET PROVINCE BY ID ==========");
-    return NextResponse.json(province);
-  } catch (error) {
-    console.error("========== ERROR GETTING PROVINCE BY ID ==========", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
+  console.log("========== END GET PROVINCE BY ID ==========");
+  return province;
 }
