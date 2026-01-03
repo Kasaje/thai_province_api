@@ -10,7 +10,6 @@ import {
   getHeaderValue,
   validateXAPIKey,
 } from "@/utils/validation";
-import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
