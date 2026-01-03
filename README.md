@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Thai Province API
 
-## Getting Started
+This repository provides an API for managing and retrieving information about provinces, districts, and sub-districts in Thailand. It is built using Next.js and TypeScript.
 
-First, run the development server:
+## Features
+
+- **Provinces**: Retrieve a list of provinces or details about a specific province.
+- **Districts**: Retrieve a list of districts, districts by province ID, or details about a specific district.
+- **Sub-Districts**: Retrieve a list of sub-districts, sub-districts by district ID, or details about a specific sub-district.
+- **Authentication**: Validate API requests using `x-api-key` headers.
+
+## Project Structure
+
+```
+.
+├── app/
+│   ├── api/
+│   │   ├── district/
+│   │   │   └── route.ts
+│   │   ├── province/
+│   │   │   └── route.ts
+│   │   ├── subDistrict/
+│   │   │   └── route.ts
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── controllers/
+│   ├── authController.ts
+│   ├── districtController.ts
+│   ├── provinceController.ts
+│   └── subDistrictController.ts
+├── data/
+│   ├── district.json
+│   ├── province.json
+│   └── subDistrict.json
+├── public/
+├── services/
+│   ├── authService.ts
+│   ├── districtService.ts
+│   ├── provinceService.ts
+│   └── subDistrictService.ts
+├── utils/
+│   ├── interface.ts
+│   └── validation.ts
+├── eslint.config.mjs
+├── next-env.d.ts
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── tsconfig.json
+└── README.md
+```
+
+## Endpoints
+
+### Province Endpoints
+
+- **GET /api/province**: Retrieve a list of provinces.
+- **POST /api/province**: Retrieve details about a specific province by ID.
+
+### District Endpoints
+
+- **GET /api/district**: Retrieve a list of districts.
+- **POST /api/district**: Retrieve districts by province ID or details about a specific district by ID.
+
+### Sub-District Endpoints
+
+- **GET /api/subDistrict**: Retrieve a list of sub-districts.
+- **POST /api/subDistrict**: Retrieve sub-districts by district ID or details about a specific sub-district by ID.
+
+## Setup
+
+### Prerequisites
+
+- Node.js (>= 16.x)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/thai_province_api.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd thai_province_api
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+To start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To build the application for production:
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+To start the production server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing
 
-## Deploy on Vercel
+To run tests (if applicable):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm test
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any changes.
+
+## Contact
+
+For any inquiries, please contact [kj.kaseamsankeawjeen@gmail.com].
